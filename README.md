@@ -26,22 +26,22 @@
 ### 下载最新的 Halo 安装包
 
 ```bash
-curl -L https://github.com/halo-dev/halo/releases/download/v1.0.1/halo-1.0.1.jar --output halo-latest.jar
+curl -L https://github.com/halo-dev/halo/releases/download/v1.0.2/halo-1.0.2.jar --output halo-latest.jar
 ```
 
 或者
 
 ```bash
-wget https://github.com/halo-dev/halo/releases/download/v1.0.1/halo-1.0.1.jar -O halo-latest.jar
+wget https://github.com/halo-dev/halo/releases/download/v1.0.2/halo-1.0.2.jar -O halo-latest.jar
 ```
 
 ### 启动 Halo
 
 ```bash
-nohup java -jar halo-latest.jar &
+nohup java -jar halo-latest.jar >/dev/null 2>&1&
 ```
 
-详细文档请移步：<https://halo.run/docs>
+详细文档请移步：<https://halo.run/guide>
 
 ## 博客示例
 

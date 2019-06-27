@@ -29,6 +29,9 @@ import run.halo.app.security.resolver.AuthenticationArgumentResolver;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+
+import static run.halo.app.model.support.HaloConst.HALO_ADMIN_RELATIVE_PATH;
 
 /**
  * Mvc configuration.
@@ -87,12 +90,10 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/admin/");
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations(workDir + "upload/");
-        registry.addResourceHandler("/favicon.ico")
-                .addResourceLocations("classpath:/static/halo-admin/images/favicon.ico");
         registry.addResourceHandler("/backup/**")
                 .addResourceLocations(workDir + "backup/");
         registry.addResourceHandler("/admin/**")
-                .addResourceLocations(workDir + "templates/admin/")
+                .addResourceLocations(workDir + HALO_ADMIN_RELATIVE_PATH)
                 .addResourceLocations("classpath:/admin/");
 
         if (!haloProperties.isDocDisabled()) {
@@ -119,6 +120,11 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPaths(FILE_PROTOCOL + haloProperties.getWorkDir() + "templates/", "classpath:/templates/");
         configurer.setDefaultEncoding("UTF-8");
+
+        Properties properties = new Properties();
+        properties.setProperty("auto_import", "/common/macro/common_macro.ftl as common");
+
+        configurer.setFreemarkerSettings(properties);
 
         // Predefine configuration
         freemarker.template.Configuration configuration = configurer.createConfiguration();

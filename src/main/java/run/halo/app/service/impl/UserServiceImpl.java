@@ -1,5 +1,7 @@
 package run.halo.app.service.impl;
 
+import cn.hutool.core.text.StrBuilder;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -124,7 +126,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         User updatedUser = update(user);
 
         // Log it
-        eventPublisher.publishEvent(new LogEvent(this, updatedUser.getId().toString(), LogType.PASSWORD_UPDATED, oldPassword));
+        eventPublisher.publishEvent(new LogEvent(this, updatedUser.getId().toString(), LogType.PASSWORD_UPDATED, HaloUtils.desensitize(oldPassword, 2, 1)));
 
         return updatedUser;
     }
@@ -193,4 +195,12 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
         user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
     }
 
+    @Override
+    public void setDefaultAvatar(User user) {
+        Assert.notNull(user, "User must not be null");
+        StrBuilder gravatar = new StrBuilder("//cn.gravatar.com/avatar/");
+        gravatar.append(SecureUtil.md5(user.getEmail()));
+        gravatar.append("?s=256&d=mm");
+        user.setAvatar(gravatar.toString());
+    }
 }
